@@ -1,10 +1,12 @@
-# Actions Doc Feed
+# Actions Readme Feed
 
-Add latest entries from RSS feed to your document.
+Display RSS feed in your [GitHub Profile README](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme)
+
+![](https://user-images.githubusercontent.com/33576079/90322554-a6815580-df90-11ea-8a16-96327dfdb0ea.png)
 
 # Usage
 
-First, add flag comments to anywhere you want in your document:
+First, add flag comments to where you want in your document:
 
 ```markdown
 ### Latest Posts
@@ -17,7 +19,7 @@ Then add following steps to your workflow:
 ```yaml
 steps:
   - uses: actions/checkout@v2
-  - uses: sarisia/actions-doc-feed@v1
+  - uses: sarisia/actions-readme-feed@v1
     with:
       url: 'https://note.sarisia.cc/index.xml'
       file: 'README.md'
@@ -89,12 +91,38 @@ You can padding variables with zeros or spaces.
 
 # Examples
 
+## Automatically update GitHub Profile README
+
+Make your workflow with `schedule` trigger.
+
+```yaml
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: sarisia/actions-readme-feed@v1
+        with:
+          url: 'https://note.sarisia.cc/index.xml'
+          file: 'README.md'
+      - run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git add .
+          git commit -m "docs: update feed" || true
+          git push
+```
+
 ## Qiita
 
 Not only Qiita, you can use any RSS feeds that [`rss-parser`](https://github.com/rbren/rss-parser) supports.
 
 ```yaml
-- uses: sarisia/actions-doc-feed@v1
+- uses: sarisia/actions-readme-feed@v1
   with:
     url: 'https://qiita.com/sarisia/feed'
     file: 'README.md'
@@ -112,14 +140,14 @@ Make sure to change `start_flag` and `end_flag` for each feed.
 
 ```yaml
 - name: blog
-  uses: sarisia/actions-doc-feed@v1
+  uses: sarisia/actions-readme-feed@v1
   with:
     url: 'https://note.sarisia.cc/index.xml'
     file: 'README.md'
     start_flag: "<!-- blog start -->"
     end_flag: "<!-- blog end -->"
 - name: qiita
-  uses: sarisia/actions-doc-feed@v1
+  uses: sarisia/actions-readme-feed@v1
   with:
     url: 'https://qiita.com/sarisia/feed'
     file: 'README.md'
