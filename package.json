@@ -1,0 +1,32 @@
+{
+  "name": "actions-readme-feed",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest --verbose --ci --detectOpenHandles",
+    "build": "tsc",
+    "release": "npm i && npm run build && npm prune --production",
+    "version": "npm run release && git add ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarisia/actions-readme-feed.git"
+  },
+  "author": "Sarisia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sarisia/actions-readme-feed/issues"
+  },
+  "homepage": "https://github.com/sarisia/actions-readme-feed#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "rss-parser": "^3.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.27",
+    "jest": "^26.4.0",
+    "ts-jest": "^26.2.0",
+    "typescript": "^3.9.7"
+  }
+}

@@ -1,0 +1,31 @@
+name: 'Actions Doc Feed'
+description: 'Update Your Document with RSS Feed'
+author: Sarisia
+
+inputs:
+  url:
+    description: 'RSS Feed URL'
+    required: true
+  file:
+    description: 'Path to Markdown file to update'
+    required: true
+  max_entry:
+    description: 'Number of entries to show'
+    required: false
+  format:
+    description: 'Feed format string'
+    required: false
+  start_flag:
+    description: 'Start of feed block in Markdown'
+    required: false
+  end_flag:
+    description: 'End of feed block in Markdown'
+    required: false
+
+runs:
+  using: 'node12'
+  main: 'lib/index.js'
+
+branding:
+  color: 'red'
+  icon: 'rss'

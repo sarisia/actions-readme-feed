@@ -1,0 +1,25 @@
+name: 'update feed'
+on:
+  workflow_dispatch:
+
+jobs:
+  feed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run build
+      - name: usage
+        uses: ./
+        with:
+          url: 'https://note.sarisia.cc/index.xml'
+          file: 'README.md'
+          start_flag: '<!-- usage start -->'
+          end_flag: '<!-- usage end -->'
+      - name: exapmles-qiita
+        uses: ./
+        with:
+          url: 'https://qiita.com/sarisia/feed'
+          file: 'README.md'
+          start_flag: "<!-- qiitaex start -->"
+          end_flag: "<!-- qiitaex end -->"
