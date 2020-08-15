@@ -1,5 +1,5 @@
-name: 'Actions Doc Feed'
-description: 'Update Your Document with RSS Feed'
+name: 'Actions Readme Feed'
+description: 'Display RSS feed in your GitHub Profile README'
 author: Sarisia
 
 inputs:
@@ -12,15 +12,19 @@ inputs:
   max_entry:
     description: 'Number of entries to show'
     required: false
+    default: 5
   format:
     description: 'Feed format string'
     required: false
+    default: '- ${monthshort} ${02day} - [${title}](${url})'
   start_flag:
     description: 'Start of feed block in Markdown'
     required: false
+    default: '<!-- feed start -->'
   end_flag:
     description: 'End of feed block in Markdown'
     required: false
+    default: '<!-- feed end -->'
 
 runs:
   using: 'node12'
