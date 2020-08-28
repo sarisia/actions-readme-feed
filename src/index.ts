@@ -44,23 +44,26 @@ async function run() {
     }
 
     // get entries from feed
-    let items: Array<rss.Item>
+    let allItems: Array<rss.Item>
     try {
-        items = await getFeedItems(url)
+        allItems = await getFeedItems(url)
     } catch (e) {
         core.error(`failed to get feed: ${e.message}`)
         return
     }
 
     // construct feed lines
-    const newLines = formatFeeds(items.slice(0, maxEntry), format, startFlag, endFlag)
-    core.startGroup('Dump feeds')
-        core.info(newLines.join('\n'))
+    const items = allItems.slice(0, maxEntry)
+    const newLines = formatFeeds(items, format, startFlag, endFlag)
+    const fnewLines = newLines.join('\n')
+    core.startGroup('Dump feeds block')
+        core.info(fnewLines)
     core.endGroup()
 
     const result = updateFeed(lines, newLines, startFlag, endFlag)
-    core.startGroup('Dump result')
-        core.info(result.join('\n'))
+    const fresult = result.join('\n')
+    core.startGroup('Dump result document')
+        core.info(fresult)
     core.endGroup()
     
     // write result to file
@@ -71,6 +74,10 @@ async function run() {
         return
     }
 
+    core.info('Generating outputs...')
+    core.setOutput('items', items)
+    core.setOutput('newlines', fnewLines)
+    core.setOutput('result', fresult)
     core.info('Done!')
 }
 
