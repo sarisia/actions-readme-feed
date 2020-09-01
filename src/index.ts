@@ -78,7 +78,7 @@ async function run() {
     core.setOutput('items', items)
     core.setOutput('newlines', fnewLines)
     core.setOutput('result', fresult)
-    core.setOutput('changed', isChanged(lines, result))
+    core.setOutput('changed', isChanged(lines, result) ? '1' : '0')
     core.info('Done!')
 }
 

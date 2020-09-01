@@ -91,7 +91,7 @@ You can padding variables with zeros or spaces.
 
 # Outputs
 
-- `changed`: Whether the document is changed while this actions's run. `true` or `false`.
+- `changed`: Whether the document is changed while this actions's run. `1` if changed, `0` else.
 
 - `items`: Raw feed entry from [`rssparser`](https://www.npmjs.com/package/rss-parser).
   ```json
@@ -133,7 +133,7 @@ with `\n`.
 
 `changed` output can be used directly in the `if` conditional.
 
-```
+```yaml
 steps:
   - uses: sarisia/actions-readme-feed@v1
     id: feed
@@ -141,7 +141,8 @@ steps:
       url: 'https://blog.example.com/feed.xml'
       file: 'README.md'
   - uses: sarisia/step-to-run-if-changed@master
-    if: ${{ steps.feed.outputs.changed }}
+    if: ${{ steps.feed.outputs.changed == true }}
+    run: echo "changed!"
 ```
 
 ## Update GitHub Profile README automatically
@@ -163,7 +164,7 @@ jobs:
         with:
           url: 'https://note.sarisia.cc/index.xml'
           file: 'README.md'
-      - if: ${{ steps.feed.outputs.changed }}
+      - if: ${{ steps.feed.outputs.changed == true }}
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
