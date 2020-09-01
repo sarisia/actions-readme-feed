@@ -1,4 +1,4 @@
-import { updateFeed } from '../src/markdown'
+import { updateFeed, isChanged } from '../src/markdown'
 
 const newLines = [
     "<!-- newline start -->",
@@ -142,5 +142,72 @@ describe('insertLines', () => {
         ]
         const got = updateFeed(lines, newLines, startFlag, endFlag)
         expect(got).toStrictEqual(want)
+    })
+})
+
+describe('isChanged', () => {
+    test('default', () => {
+        const orig = [
+            "line 1",
+            "line 2",
+            "line 3"
+        ]
+        const curr = [
+            "line 1",
+            "line 2",
+            "line 3"
+        ]
+        const got = isChanged(orig, curr)
+        expect(got).toBe(false)
+    })
+
+    test('different length', () => {
+        const orig = [
+            "line 1",
+            "line 2",
+            "line 3"
+        ]
+        const curr = [
+            "line 1",
+            "line 2"
+        ]
+        const got = isChanged(orig, curr)
+        expect(got).toBe(true)
+    })
+
+    test('different content', () => {
+        const orig = [
+            "line 1",
+            "line 2",
+            "line 3"
+        ]
+        const curr = [
+            "line 1",
+            "line 2 ",
+            "line 3"
+        ]
+        const got = isChanged(orig, curr)
+        expect(got).toBe(true)
+    })
+
+    test('has empty line', () => {
+        const orig = [
+            "",
+            "line 1",
+            "line 2",
+            "line 3",
+            "",
+            ""
+        ]
+        const curr = [
+            "",
+            "line 1",
+            "line 2",
+            "line 3",
+            "",
+            ""
+        ]
+        const got = isChanged(orig, curr)
+        expect(got).toBe(false)
     })
 })

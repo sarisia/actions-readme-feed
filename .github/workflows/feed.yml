@@ -17,9 +17,13 @@ jobs:
           start_flag: '<!-- usage start -->'
           end_flag: '<!-- usage end -->'
       - name: exapmles-qiita
+        id: qiita
         uses: ./
         with:
           url: 'https://qiita.com/sarisia/feed'
           file: 'README.md'
           start_flag: "<!-- qiitaex start -->"
           end_flag: "<!-- qiitaex end -->"
+      - name: fuck
+        if: ${{steps.qiita.outputs.changed}}
+        run: echo "changeed! ${{steps.qiita.outputs.changed}}"

@@ -53,3 +53,11 @@ function insertLines(
 export async function writeLines(file:string, lines:Array<string>) {
     await fs.writeFile(file, lines.join('\n'))
 }
+
+export function isChanged(orig: string[], curr: string[]): boolean {
+    if (orig.length !== curr.length) {
+        return true
+    }
+
+    return !orig.every((l, i) => l === curr[i])
+}

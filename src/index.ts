@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as rss from 'rss-parser'
 import { getFeedItems } from './feed'
-import { getLines, writeLines, updateFeed } from './markdown'
+import { getLines, writeLines, updateFeed, isChanged } from './markdown'
 import { formatFeeds } from './format'
 
 async function run() {
@@ -35,7 +35,7 @@ async function run() {
     core.endGroup()
 
     // ger current markdown, parse them
-    let lines: Array<string>
+    let lines: string[]
     try {
         lines = await getLines(file)
     } catch(e) {
@@ -44,7 +44,7 @@ async function run() {
     }
 
     // get entries from feed
-    let allItems: Array<rss.Item>
+    let allItems: rss.Item[]
     try {
         allItems = await getFeedItems(url)
     } catch (e) {
@@ -78,6 +78,7 @@ async function run() {
     core.setOutput('items', items)
     core.setOutput('newlines', fnewLines)
     core.setOutput('result', fresult)
+    core.setOutput('changed', isChanged(lines, result))
     core.info('Done!')
 }
 
