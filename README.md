@@ -35,11 +35,11 @@ The result looks like:
 
 ### Latest Posts
 <!-- usage start -->
+- Aug 21 - [C.UTF-8 とは何だったのか](https://note.sarisia.cc/entry/what-is-c-utf8/)
+- Aug 17 - [RSS フィードを GitHub プロフィールに表示する](https://note.sarisia.cc/entry/actions-readme-feed/)
 - Aug 10 - [fish スクリプトのデバッグ](https://note.sarisia.cc/entry/debugging-fish-script/)
 - Aug 08 - [Arch Linux Install Battle](https://note.sarisia.cc/entry/arch-linux-install-battle/)
 - Aug 05 - [Linuxbrew で emscripten を導入する](https://note.sarisia.cc/entry/linuxbrew-emscripten/)
-- Jul 29 - [UWP アプリは localhost へ接続できない](https://note.sarisia.cc/entry/uwp-localhost/)
-- Jul 22 - [Linuxbrew で入れた Go でビルドしたバイナリは可搬性が無い](https://note.sarisia.cc/entry/linuxbrew-go/)
 <!-- usage end -->
 
 # Inputs
@@ -55,7 +55,7 @@ The result looks like:
 
 # Formatting
 
-Example uses following RSS feed item:
+Examples below uses following RSS feed item:
 
 ```xml
 <item>
@@ -89,9 +89,62 @@ You can padding variables with zeros or spaces.
 | `${2day}` | ` 5` | Pads to length 2 with spaces |
 | `${05month}` | `00008` | Pads to length 5 with zeros |
 
+# Outputs
+
+- `changed`: Whether document is changed while this actions's run. `true` or `false`.
+
+- `items`: Raw feed entry from [`rssparser`](https://www.npmjs.com/package/rss-parser).
+  ```json
+  [
+    {
+      "title":"C.UTF-8 とは何だったのか",
+      "link":"https://note.sarisia.cc/entry/what-is-c-utf8/","pubDate":"Fri, 21 Aug 2020 00:00:00 +0000",
+      "content":"TL;DR 全ての Linux ディス...",
+      "guid":"https://note.sarisia.cc/entry/what-is-c-utf8/",
+      "isoDate":"2020-08-21T00:00:00.000Z"
+    },
+    ...
+  ]
+  ```
+
+- `newlines`: New lines inserted to the document specified as `file`. Lines are joined
+with `\n`.
+  ```
+  <!-- feed start -->
+  - Aug 10 - [fish スクリプトのデバッグ](https://note.sarisia.cc/entry/debugging-fish-script/)
+  - Aug 08 - [Arch Linux Install Battle](https://note.sarisia.cc/entry/arch-linux-install-battle/)
+  - Aug 05 - [Linuxbrew で emscripten を導入する](https://note.sarisia.cc/entry/linuxbrew-emscripten/)
+  - Jul 29 - [UWP アプリは localhost へ接続できない](https://note.sarisia.cc/entry/uwp-localhost/)
+  - Jul 22 - [Linuxbrew で入れた Go でビルドしたバイナリは可搬性が無い](https://note.sarisia.cc/entry/linuxbrew-go/)
+  <!-- feed end -->
+  ```
+
+- `result`: Result document with feed lines inserted. Lines are joined with `\n`
+  ```
+  # Actions Readme Feed
+
+  Display RSS feed in your [GitHub Profile README](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme)
+  ...
+  ```
+
 # Examples
 
-## Automatically update GitHub Profile README
+## Using `changed` output
+
+`changed` output can be used directly in the `if` conditional.
+
+```
+steps:
+  - uses: sarisia/actions-readme-feed@v1
+    id: feed
+    with:
+      url: 'https://blog.example.com/feed.xml'
+      file: 'README.md'
+  - uses: sarisia/step-to-run-if-changed@master
+    if: ${{ steps.feed.outputs.changed }}
+```
+
+## Update GitHub Profile README automatically
 
 Make your workflow with `schedule` trigger.
 
@@ -106,18 +159,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: sarisia/actions-readme-feed@v1
+        id: feed
         with:
           url: 'https://note.sarisia.cc/index.xml'
           file: 'README.md'
-      - run: |
+      - if: ${{ steps.feed.outputs.changed }}
+        run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git add .
-          git commit -m "docs: update feed" || true
+          git commit -m "docs: update feed"
           git push
 ```
 
-## Qiita
+## Other sources (e.g. Qiita)
 
 Not only Qiita, you can use any RSS feeds that [`rss-parser`](https://github.com/rbren/rss-parser) supports.
 
@@ -129,6 +184,7 @@ Not only Qiita, you can use any RSS feeds that [`rss-parser`](https://github.com
 ```
 
 <!-- qiitaex start -->
+- Aug 24 - [GitHubプロフィールにブログやQiitaの最新記事を表示する](https://qiita.com/sarisia/items/630d53cee7976e36faa3)
 - Jul 07 - [ローカルでも CI でも使える卒論ビルド環境](https://qiita.com/sarisia/items/bd306a064a8a5c2ab843)
 - Jun 21 - [Go Module Mirror から壊れたパッケージが落ちてくる](https://qiita.com/sarisia/items/6a0c2fdb7fa8a253b0de)
 - Jun 06 - [WSL2 Docker が PC のディスクを圧迫する](https://qiita.com/sarisia/items/5c53c078ab30eb26bc3b)
