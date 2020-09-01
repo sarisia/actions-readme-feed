@@ -91,7 +91,7 @@ You can padding variables with zeros or spaces.
 
 # Outputs
 
-- `changed`: Whether document is changed while this actions's run. `true` or `false`.
+- `changed`: Whether the document is changed while this actions's run. `true` or `false`.
 
 - `items`: Raw feed entry from [`rssparser`](https://www.npmjs.com/package/rss-parser).
   ```json

@@ -26,6 +26,16 @@ inputs:
     required: false
     default: '<!-- feed end -->'
 
+outputs:
+  changed:
+    description: Whether the document is changed while this actions's run
+  items:
+    description: Raw feed entry from rssparser
+  newlines:
+    description: New lines inserted to the document
+  result:
+    description: Result document with feed lines inserted
+
 runs:
   using: 'node12'
   main: 'lib/index.js'
