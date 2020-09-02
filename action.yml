@@ -9,10 +9,14 @@ inputs:
   file:
     description: 'Path to Markdown file to update'
     required: true
+  sort:
+    description: 'Sort feed entries by date in decending order'
+    required: false
+    default: 'true'
   max_entry:
     description: 'Number of entries to show'
     required: false
-    default: 5
+    default: '5'
   format:
     description: 'Feed format string'
     required: false
