@@ -140,8 +140,7 @@ steps:
     with:
       url: 'https://blog.example.com/feed.xml'
       file: 'README.md'
-  - uses: sarisia/step-to-run-if-changed@master
-    if: ${{ steps.feed.outputs.changed == true }}
+  - if: ${{ steps.feed.outputs.changed == true }}
     run: echo "changed!"
 ```
 
