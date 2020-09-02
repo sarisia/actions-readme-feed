@@ -48,6 +48,7 @@ The result looks like:
 | :-: | :-: | :-: | - | - |
 | `url` | Yes | String | | URL of RSS feed (XML) |
 | `file` | Yes | String | | Path to document file to process.<br>Can be relative path from repository root, or absolute path of Actions Runner. |
+| `sort` | | Boolean | `true` | Sort feed entries by date in decending order. |
 | `max_entry` | | Number | `5` | Number of feed entries to show |
 | `format` | | String | `- ${monthshort} ${02day} - [${title}](${url})` | Feed entry format string.<br>See [Formatting](#formatting) for details. |
 | `start_flag` | | String | `<!-- feed start -->` | Flag string to declare start of feed block |

@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as rss from 'rss-parser'
-import { getFeedItems } from './feed'
+import { getFeedItems, sortItems } from './feed'
 import { getLines, writeLines, updateFeed, isChanged } from './markdown'
 import { formatFeeds } from './format'
 
@@ -18,6 +18,7 @@ async function run() {
         return
     }
 
+    const sort = core.getInput('sort').toLowerCase() === 'true'
     const maxEntry = parseInt(core.getInput('max_entry')) || 5
     // DO NOT USE core.getInput cuz it trims spaces / breaks at the end of line
     const format = process.env['INPUT_FORMAT'] || '- ${monthshort} ${02day} - [${title}](${url})'
@@ -50,6 +51,16 @@ async function run() {
     } catch (e) {
         core.error(`failed to get feed: ${e.message}`)
         return
+    }
+
+    // sort
+    if (sort) {
+        try {
+            allItems = sortItems(allItems)
+        } catch (e) {
+            core.error(`failed to sort feed items: ${e.message}`)
+            return
+        }
     }
 
     // construct feed lines
