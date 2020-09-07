@@ -132,12 +132,12 @@ describe('insertLines', () => {
         const want = [
             "line 1",
             "line 2",
+            "<!-- feed end -->",
             "<!-- newline start -->",
             "newline 1",
             "newline 2",
             "newline 3",
             "<!-- newline end -->",
-            "<!-- feed start -->",
             "line 3"
         ]
         const got = updateFeed(lines, newLines, startFlag, endFlag)

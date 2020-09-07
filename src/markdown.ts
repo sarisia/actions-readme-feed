@@ -8,8 +8,8 @@ export async function getLines(file:string): Promise<Array<string>> {
 }
 
 export function updateFeed(lines: Array<string>, newlines: Array<string>, startFlag: string, endFlag: string) {
-    const startFlagPos = lines.findIndex(l => l === startFlag)
-    const endFlagPos = lines.findIndex(l => l === endFlag)
+    const startFlagPos = lines.indexOf(startFlag)
+    const endFlagPos = lines.indexOf(endFlag, Math.max(startFlagPos, 0))
     core.info(`start_flag position: ${startFlagPos}`)
     core.info(`end_flag position: ${endFlagPos}`)
 
@@ -37,10 +37,6 @@ function insertLines(
         // we only have one of each
         // use that flag pos
         newStartPos = newEndPos = flagMax
-    } else if (startFlagPos > endFlagPos) {
-        // has reversed start, end
-        // use end pos
-        newStartPos = newEndPos = endFlagPos
     }
 
     return [
