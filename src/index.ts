@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as rss from 'rss-parser'
 import { getFeedItems, sortItems } from './feed'
-import { getLines, writeLines, updateFeed, isChanged } from './markdown'
+import { getLines, writeLines, updateFeed, isChanged, write } from './markdown'
 import { formatFeeds } from './format'
 
 async function run() {
@@ -67,20 +67,20 @@ async function run() {
     // construct feed lines
     const items = allItems.slice(0, maxEntry)
     const newLines = formatFeeds(items, format, startFlag, endFlag)
-    const fnewLines = newLines.join('\n')
+    const joinedNewLines = newLines.join('\n')
     core.startGroup('Dump feeds block')
-        core.info(fnewLines)
+        core.info(joinedNewLines)
     core.endGroup()
 
     const result = updateFeed(lines, newLines, startFlag, endFlag)
-    const fresult = result.join('\n')
+    const joinedResult = result.join('\n')
     core.startGroup('Dump result document')
-        core.info(fresult)
+        core.info(joinedResult)
     core.endGroup()
     
     // write result to file
     try {
-        await writeLines(file, result)
+        await write(file, joinedResult)
     } catch (e) {
         core.error(`failed to write file: ${e.message}`)
         return
@@ -88,8 +88,8 @@ async function run() {
 
     core.info('Generating outputs...')
     core.setOutput('items', items)
-    core.setOutput('newlines', fnewLines)
-    core.setOutput('result', fresult)
+    core.setOutput('newlines', joinedNewLines)
+    core.setOutput('result', joinedResult)
     core.setOutput('changed', isChanged(lines, result) ? '1' : '0')
     core.info('Done!')
 }

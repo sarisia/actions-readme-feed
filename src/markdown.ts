@@ -54,6 +54,10 @@ export async function writeLines(file:string, lines:Array<string>) {
     await fs.writeFile(file, lines.join('\n'))
 }
 
+export async function write(file:string, data:string) {
+    await fs.writeFile(file, data)
+}
+
 export function isChanged(orig: string[], curr: string[]): boolean {
     if (orig.length !== curr.length) {
         return true
