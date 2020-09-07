@@ -20,7 +20,7 @@ async function run() {
 
     const sort = core.getInput('sort').toLowerCase() === 'true'
     const maxEntry = parseInt(core.getInput('max_entry')) || 5
-    // DO NOT USE core.getInput cuz it trims spaces / breaks at the end of line
+    // DO NOT USE core.getInput since it trims spaces/breaks at the end of line
     const format = process.env['INPUT_FORMAT'] || '- ${monthshort} ${02day} - [${title}](${url})'
     const startFlag = core.getInput('start_flag') || '<!-- feed start -->'
     const endFlag = core.getInput('end_flag') || '<!-- feed end -->'
@@ -29,6 +29,7 @@ async function run() {
     core.startGroup('Dump config')
         core.info(`url: ${url}`)
         core.info(`file: ${file}`)
+        core.info(`sort: ${sort}`)
         core.info(`max_entry: ${maxEntry}`)
         core.info(`format: ${format}`)
         core.info(`start_flag: ${startFlag}`)
