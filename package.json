@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --verbose --ci --detectOpenHandles",
     "build": "tsc",
-    "release": "npm i && npm run build && npm prune --production",
+    "release": "npm ci && npm run build && npm prune --production",
     "version": "npm run release && git add ."
   },
   "repository": {
