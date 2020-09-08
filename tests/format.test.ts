@@ -3,6 +3,8 @@ import rss from 'rss-parser'
 
 const startFlag = "<!-- feed start -->"
 const endFlag = "<!-- feed end -->"
+const locale = 'en-US'
+const timezone = 'UTC'
 
 describe("formatFeeds", () => {
     test("full", () => {
@@ -25,7 +27,7 @@ describe("formatFeeds", () => {
             "example blog entry 2:https://blog.example.com/entry2:2020:8:Aug:August:1:8/1/2020, 12:11:22 AM",
             "<!-- feed end -->"
         ]
-        const got = formatFeeds(feeds, format, startFlag, endFlag)
+        const got = formatFeeds(feeds, format, startFlag, endFlag, locale, timezone)
         expect(got).toStrictEqual(want)
     })
 
@@ -41,7 +43,31 @@ describe("formatFeeds", () => {
             "title:(no title),url:,month:,day:,date:",
             "<!-- feed end -->"
         ]
-        const got = formatFeeds(feeds, format, startFlag, endFlag)
+        const got = formatFeeds(feeds, format, startFlag, endFlag, locale, timezone)
+        expect(got).toStrictEqual(want)
+    })
+
+    test("different locale and timezone", () => {
+        const feeds: Array<rss.Item> = [
+            {
+                link: "https://blog.example.com/entry1",
+                title: "example blog entry",
+                isoDate: "2015-11-12T21:16:39.000Z"
+            },
+            {
+                link: "https://blog.example.com/entry2",
+                title: "example blog entry 2",
+                isoDate: "2020-08-01T00:11:22.000Z"
+            }
+        ]
+        const format = "${title}:${url}:${year}:${month}:${monthshort}:${monthlong}:${day}:${date}"
+        const want = [
+            "<!-- feed start -->",
+            "example blog entry:https://blog.example.com/entry1:2015年:11月:11月:11月:13日:2015/11/13 6:16:39",
+            "example blog entry 2:https://blog.example.com/entry2:2020年:8月:8月:8月:1日:2020/8/1 9:11:22",
+            "<!-- feed end -->"
+        ]
+        const got = formatFeeds(feeds, format, startFlag, endFlag, 'ja-JP', 'Asia/Tokyo')
         expect(got).toStrictEqual(want)
     })
 
@@ -65,7 +91,7 @@ describe("formatFeeds", () => {
             "title:example blog entry 2,title2:example blog entry 2",
             "<!-- feed end -->"
         ]
-        const got = formatFeeds(feeds, format, startFlag, endFlag)
+        const got = formatFeeds(feeds, format, startFlag, endFlag, locale, timezone)
         expect(got).toStrictEqual(want)
     })
 
@@ -89,7 +115,7 @@ describe("formatFeeds", () => {
             "missing:",
             "<!-- feed end -->"
         ]
-        const got = formatFeeds(feeds, format, startFlag, endFlag)
+        const got = formatFeeds(feeds, format, startFlag, endFlag, locale, timezone)
         expect(got).toStrictEqual(want)
     })
 
@@ -113,7 +139,7 @@ describe("formatFeeds", () => {
             "{title}:{url}:{2020}",
             "<!-- feed end -->"
         ]
-        const got = formatFeeds(feeds, format, startFlag, endFlag)
+        const got = formatFeeds(feeds, format, startFlag, endFlag, locale, timezone)
         expect(got).toStrictEqual(want)
     })
 
@@ -137,7 +163,7 @@ describe("formatFeeds", () => {
             "day:00001",
             "<!-- feed end -->"
         ]
-        const got = formatFeeds(feeds, format, startFlag, endFlag)
+        const got = formatFeeds(feeds, format, startFlag, endFlag, locale, timezone)
         expect(got).toStrictEqual(want)
     })
 
@@ -161,7 +187,7 @@ describe("formatFeeds", () => {
             "day:       1",
             "<!-- feed end -->"
         ]
-        const got = formatFeeds(feeds, format, startFlag, endFlag)
+        const got = formatFeeds(feeds, format, startFlag, endFlag, locale, timezone)
         expect(got).toStrictEqual(want)
     })
 
@@ -185,7 +211,7 @@ describe("formatFeeds", () => {
             "day:1",
             "<!-- feed end -->"
         ]
-        const got = formatFeeds(feeds, format, startFlag, endFlag)
+        const got = formatFeeds(feeds, format, startFlag, endFlag, locale, timezone)
         expect(got).toStrictEqual(want)
     })
 })

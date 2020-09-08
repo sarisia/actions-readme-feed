@@ -24,6 +24,8 @@ async function run() {
     const format = process.env['INPUT_FORMAT'] || '- ${monthshort} ${02day} - [${title}](${url})'
     const startFlag = core.getInput('start_flag') || '<!-- feed start -->'
     const endFlag = core.getInput('end_flag') || '<!-- feed end -->'
+    const locale = core.getInput('locale') || 'en-US'
+    const timezone = core.getInput('timezone') || 'UTC'
 
     // ger current markdown, parse them
     let lines: string[]
