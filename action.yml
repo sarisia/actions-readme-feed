@@ -29,6 +29,14 @@ inputs:
     description: 'End of feed block in Markdown'
     required: false
     default: '<!-- feed end -->'
+  locale:
+    description: 'Locale used to format date'
+    required: false
+    default: 'en-US'
+  timezone:
+    description: 'Timezone used to format date'
+    required: false
+    default: 'UTC'
 
 outputs:
   changed:
