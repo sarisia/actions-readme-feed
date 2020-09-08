@@ -53,7 +53,7 @@ The result looks like:
 | `format` | | String | `- ${monthshort} ${02day} - [${title}](${url})` | Feed entry format string.<br>See [Formatting](#formatting) for details. |
 | `start_flag` | | String | `<!-- feed start -->` | Flag string to declare start of feed block |
 | `end_flag` | | String | `<!-- feed end -->` | Flag string to declare end of feed block |
-| `locale` | | String | `en-US` | Locale used to format date<br>**NOT WORKING.** See [] |
+| `locale` | | String | `en-US` | Locale used to format date<br>**NOT WORKING.** See [remarks](#locale-option-is-not-working) |
 | `timezone` | | String | `UTC` | Timezone used to format date |
 
 # Formatting
