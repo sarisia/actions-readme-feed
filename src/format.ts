@@ -1,8 +1,8 @@
 import rss from 'rss-parser'
 
 const placeholderRe = /(?<raw>\$\{(?<flag>\d*)(?<verb>.+?)\})/g
-const locale = "en-US"
-const timezone = "UTC"
+const DEFAULT_LOCALE = "en-US"
+const DEFAULT_TZ = "UTC"
 
 export function formatFeeds(feeds:Array<rss.Item>, format:string, startFlag:string, endFlag:string): Array<string> {
     // @ts-ignore
@@ -21,12 +21,12 @@ function formatFeed(feed:rss.Item, format:string, fields: Array<{raw:string, fla
     const args: { [k: string]: string | undefined } = {
         title: feed.title || '(no title)',
         url: feed.link,
-        year: feedDate?.toLocaleString(locale, { timeZone: timezone, year: 'numeric' }),
-        month: feedDate?.toLocaleString(locale, { month: 'numeric' }),
-        monthshort: feedDate?.toLocaleString(locale, { timeZone: timezone, month: 'short' }),
-        monthlong: feedDate?.toLocaleString(locale, { timeZone: timezone, month: 'long' }),
-        day: feedDate?.toLocaleString(locale, { timeZone: timezone, day: 'numeric' }),
-        date: feedDate?.toLocaleString(locale, { timeZone: timezone })
+        year: feedDate?.toLocaleString(DEFAULT_LOCALE, { timeZone: DEFAULT_TZ, year: 'numeric' }),
+        month: feedDate?.toLocaleString(DEFAULT_LOCALE, { timeZone: DEFAULT_TZ, month: 'numeric' }),
+        monthshort: feedDate?.toLocaleString(DEFAULT_LOCALE, { timeZone: DEFAULT_TZ, month: 'short' }),
+        monthlong: feedDate?.toLocaleString(DEFAULT_LOCALE, { timeZone: DEFAULT_TZ, month: 'long' }),
+        day: feedDate?.toLocaleString(DEFAULT_LOCALE, { timeZone: DEFAULT_TZ, day: 'numeric' }),
+        date: feedDate?.toLocaleString(DEFAULT_LOCALE, { timeZone: DEFAULT_TZ })
     }
 
     return fields.reduce((acc:string, cur:{raw:string, flag:string, verb:string}) => {
