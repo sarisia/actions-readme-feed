@@ -53,7 +53,7 @@ The result looks like:
 | `format` | | String | `- ${monthshort} ${02day} - [${title}](${url})` | Feed entry format string.<br>See [Formatting](#formatting) for details. |
 | `start_flag` | | String | `<!-- feed start -->` | Flag string to declare start of feed block |
 | `end_flag` | | String | `<!-- feed end -->` | Flag string to declare end of feed block |
-| `locale` | | String | `en-US` | Locale used to format date |
+| `locale` | | String | `en-US` | Locale used to format date<br>**NOT WORKING.** See [] |
 | `timezone` | | String | `UTC` | Timezone used to format date |
 
 # Formatting
@@ -223,3 +223,12 @@ Make sure to change `start_flag` and `end_flag` for each feed.
 <!-- qiita start -->
 <!-- qiita end -->
 ```
+
+# Remarks
+
+## `locale` option is not working
+
+Setting `locale` option is not working correctly due to the limitation of
+Node.js shipped with GitHub Actions runner. I'm investigating this issue.
+
+`timezone` seems working correctly.
