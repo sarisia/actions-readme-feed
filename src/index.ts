@@ -57,7 +57,7 @@ async function run() {
 
     // construct feed lines
     const items = allItems.slice(0, maxEntry)
-    const newLines = formatFeeds(items, format, startFlag, endFlag)
+    const newLines = formatFeeds(items, format, startFlag, endFlag, locale, timezone)
     const joinedNewLines = newLines.join('\n')
     core.startGroup('Dump feeds block')
         core.info(joinedNewLines)
