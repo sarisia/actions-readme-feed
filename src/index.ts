@@ -25,17 +25,6 @@ async function run() {
     const startFlag = core.getInput('start_flag') || '<!-- feed start -->'
     const endFlag = core.getInput('end_flag') || '<!-- feed end -->'
 
-    // dump config
-    core.startGroup('Dump config')
-        core.info(`url: ${url}`)
-        core.info(`file: ${file}`)
-        core.info(`sort: ${sort}`)
-        core.info(`max_entry: ${maxEntry}`)
-        core.info(`format: ${format}`)
-        core.info(`start_flag: ${startFlag}`)
-        core.info(`end_flag: ${endFlag}`)
-    core.endGroup()
-
     // ger current markdown, parse them
     let lines: string[]
     try {
