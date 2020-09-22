@@ -24,7 +24,7 @@ jobs:
       - run: npm i icu4c-data@64l
       - run: npm test
         env:
-          NODE_ICU_DATA: node_modules/icu4c-data
+          NODE_ICU_DATA: ./node_modules/icu4c-data
       - uses: sarisia/actions-status-discord@v1
         if: always()
         with:
