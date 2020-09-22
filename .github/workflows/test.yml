@@ -6,6 +6,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v2
       - run: npm ci
@@ -20,11 +21,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.13'
       - run: npm ci
       - run: npm i icu4c-data@64l
       - run: npm test
         env:
-          NODE_ICU_DATA: node_modules/icu4c-data
+          NODE_ICU_DATA: ./node_modules/icu4c-data
       - uses: sarisia/actions-status-discord@v1
         if: always()
         with:
