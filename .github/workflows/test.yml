@@ -15,6 +15,22 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: test
+
+  test-icu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm i icu4c-data@64l
+      - run: npm test
+        env:
+          NODE_ICU_DATA: node_modules/icu4c-data
+      - uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: test-icu
+          
   release-test: 
     runs-on: ubuntu-latest
     steps:
