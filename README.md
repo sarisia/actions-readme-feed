@@ -226,9 +226,21 @@ Make sure to change `start_flag` and `end_flag` for each feed.
 
 # Remarks
 
-## `locale` option is not working
+## `locale` option needs additional operation
 
 Setting `locale` option is not working correctly due to the limitation of
-Node.js shipped with GitHub Actions runner. I'm investigating this issue.
+Node.js shipped with GitHub Actions runner.
 
-`timezone` seems working correctly.
+If you want this to work, you need to set up ICU data set manually
+by adding a few lines to your workflow:
+
+```yaml
+steps:
+  - run: npm install icu4c-data@64l
+  - uses: sarisia/actions-readme-feed@v1
+    with:
+      file: README.md
+      locale: 'ja-JP'
+    env:
+      NODE_ICU_DATA: node_modules/icu4c-data
+```
