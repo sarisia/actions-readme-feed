@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/sarisia/actions-readme-feed#readme",
   "dependencies": {
-    "@actions/core": "^1.2.5",
+    "@actions/core": "^1.2.6",
     "rss-parser": "^3.9.0"
   },
   "devDependencies": {
