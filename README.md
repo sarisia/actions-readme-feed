@@ -4,6 +4,12 @@ Display RSS feed in your [GitHub Profile README](https://docs.github.com/en/gith
 
 ![](https://user-images.githubusercontent.com/33576079/90322554-a6815580-df90-11ea-8a16-96327dfdb0ea.png)
 
+- [Usage](#usage)
+- [Inputs](#inputs)
+- [Outputs](#outputs)
+- [Examples](#examples)
+- [Remarks](#remarks)
+
 # Usage
 
 First, add flag comments to where you want in your document:
@@ -23,6 +29,19 @@ steps:
     with:
       url: 'https://note.sarisia.cc/index.xml'
       file: 'README.md'
+  - uses: sarisia/actions-commit@master
+```
+
+<details>
+<summary>Or commit manually...</summary>
+  
+```yaml
+steps:
+  - uses: actions/checkout@v2
+  - uses: sarisia/actions-readme-feed@v1
+    with:
+      url: 'https://note.sarisia.cc/index.xml'
+      file: 'README.md'
   - run: |
       git config --global user.name "${{ github.actor }}"
       git config --global user.email "${{ github.actor }}@users.noreply.github.com"
@@ -30,6 +49,8 @@ steps:
       git commit -m "docs: update feed" || true
       git push
 ```
+
+</details>
 
 The result looks like:
 
@@ -53,8 +74,8 @@ The result looks like:
 | `format` | | String | `- ${monthshort} ${02day} - [${title}](${url})` | Feed entry format string.<br>See [Formatting](#formatting) for details. |
 | `start_flag` | | String | `<!-- feed start -->` | Flag string to declare start of feed block |
 | `end_flag` | | String | `<!-- feed end -->` | Flag string to declare end of feed block |
-| `locale` | | String | `en-US` | Locale used to format date<br>**NOT WORKING.** See [remarks](#locale-option-is-not-working) |
-| `timezone` | | String | `UTC` | Timezone used to format date |
+| `locale` | | String | `en-US` | Locale used to format date<br>**NEEDS ADDITIONAL OPERATION.** See [remarks](#locale-option-needs-additional-operation) |
+| `timezone` | | String | `UTC` | Timezone (e.g. `Asia/Tokyo`) used to format date |
 
 # Formatting
 
