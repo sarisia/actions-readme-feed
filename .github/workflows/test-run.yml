@@ -28,3 +28,7 @@ jobs:
           file: 'README.md'
           start_flag: "<!-- qiitaex start -->"
           end_flag: "<!-- qiitaex end -->"
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: test-run
