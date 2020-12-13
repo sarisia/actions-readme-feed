@@ -4,6 +4,15 @@ Display RSS feed in your [GitHub Profile README](https://docs.github.com/en/gith
 
 ![](https://user-images.githubusercontent.com/33576079/90322554-a6815580-df90-11ea-8a16-96327dfdb0ea.png)
 
+> :warning: If you're reading this document in Marketplace page,
+> please refer to the [latest document here](https://github.com/sarisia/actions-readme-feed).
+
+- [Usage](#usage)
+- [Inputs](#inputs)
+- [Outputs](#outputs)
+- [Examples](#examples)
+- [Remarks](#remarks)
+
 # Usage
 
 First, add flag comments to where you want in your document:
@@ -23,6 +32,19 @@ steps:
     with:
       url: 'https://note.sarisia.cc/index.xml'
       file: 'README.md'
+  - uses: sarisia/actions-commit@master
+```
+
+<details>
+<summary>Or commit manually...</summary>
+  
+```yaml
+steps:
+  - uses: actions/checkout@v2
+  - uses: sarisia/actions-readme-feed@v1
+    with:
+      url: 'https://note.sarisia.cc/index.xml'
+      file: 'README.md'
   - run: |
       git config --global user.name "${{ github.actor }}"
       git config --global user.email "${{ github.actor }}@users.noreply.github.com"
@@ -30,6 +52,8 @@ steps:
       git commit -m "docs: update feed" || true
       git push
 ```
+
+</details>
 
 The result looks like:
 
@@ -53,8 +77,8 @@ The result looks like:
 | `format` | | String | `- ${monthshort} ${02day} - [${title}](${url})` | Feed entry format string.<br>See [Formatting](#formatting) for details. |
 | `start_flag` | | String | `<!-- feed start -->` | Flag string to declare start of feed block |
 | `end_flag` | | String | `<!-- feed end -->` | Flag string to declare end of feed block |
-| `locale` | | String | `en-US` | Locale used to format date<br>**NOT WORKING.** See [] |
-| `timezone` | | String | `UTC` | Timezone used to format date |
+| `locale` | | String | `en-US` | Locale used to format date<br>**NEEDS ADDITIONAL OPERATION.** See [remarks](#locale-option-needs-additional-operation) |
+| `timezone` | | String | `UTC` | Timezone (e.g. `Asia/Tokyo`) used to format date |
 
 # Formatting
 
@@ -74,12 +98,12 @@ Examples below uses following RSS feed item:
 | :-: | :-: | - |
 | `title` | `Blog Post` | |
 | `url` | `https://blog.example.com/blog-post` | |
-| `year` | `2020` | **UTC** |
-| `month` | `8` | **UTC** |
-| `monthshort` | `Aug` | **UTC** |
-| `monthlong` | `August` | **UTC** |
-| `day` | `5` | **UTC** |
-| `date` | `8/5/2020, 12:00:00 AM` | **UTC** |
+| `year` | `2020` | [`timezone`](#inputs) affects |
+| `month` | `8` | [`timezone`](#inputs) affects. |
+| `monthshort` | `Aug` | [`timezone`](#inputs) affects. |
+| `monthlong` | `August` | [`timezone`](#inputs) affects. |
+| `day` | `5` | [`timezone`](#inputs) affects. |
+| `date` | `8/5/2020, 12:00:00 AM` | [`timezone`](#inputs) affects. |
 
 For details, see [`src/format.ts`](src/format.ts)
 
@@ -132,20 +156,23 @@ with `\n`.
 
 # Examples
 
-## Using `changed` output
+## Other sources (e.g. Qiita)
 
-`changed` output can be used directly in the `if` conditional.
+Not only Qiita, you can use any RSS feeds which [`rss-parser`](https://github.com/rbren/rss-parser) supports.
 
 ```yaml
-steps:
-  - uses: sarisia/actions-readme-feed@v1
-    id: feed
-    with:
-      url: 'https://blog.example.com/feed.xml'
-      file: 'README.md'
-  - if: ${{ steps.feed.outputs.changed == true }}
-    run: echo "changed!"
+- uses: sarisia/actions-readme-feed@v1
+  with:
+    url: 'https://qiita.com/sarisia/feed'
+    file: 'README.md'
 ```
+
+<!-- qiitaex start -->
+- Aug 24 - [GitHubプロフィールにブログやQiitaの最新記事を表示する](https://qiita.com/sarisia/items/630d53cee7976e36faa3)
+- Jul 07 - [ローカルでも CI でも使える卒論ビルド環境](https://qiita.com/sarisia/items/bd306a064a8a5c2ab843)
+- Jun 21 - [Go Module Mirror から壊れたパッケージが落ちてくる](https://qiita.com/sarisia/items/6a0c2fdb7fa8a253b0de)
+- Jun 06 - [WSL2 Docker が PC のディスクを圧迫する](https://qiita.com/sarisia/items/5c53c078ab30eb26bc3b)
+<!-- qiitaex end -->
 
 ## Update GitHub Profile README automatically
 
@@ -167,31 +194,23 @@ jobs:
           url: 'https://note.sarisia.cc/index.xml'
           file: 'README.md'
       - if: ${{ steps.feed.outputs.changed == true }}
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git add .
-          git commit -m "docs: update feed"
-          git push
+        uses: sarisia/actions-commit@master
 ```
 
-## Other sources (e.g. Qiita)
+## Using `changed` output
 
-Not only Qiita, you can use any RSS feeds that [`rss-parser`](https://github.com/rbren/rss-parser) supports.
+`changed` output can be used directly in the `if` conditional.
 
 ```yaml
-- uses: sarisia/actions-readme-feed@v1
-  with:
-    url: 'https://qiita.com/sarisia/feed'
-    file: 'README.md'
+steps:
+  - uses: sarisia/actions-readme-feed@v1
+    id: feed
+    with:
+      url: 'https://blog.example.com/feed.xml'
+      file: 'README.md'
+  - if: ${{ steps.feed.outputs.changed == true }}
+    run: echo "changed!"
 ```
-
-<!-- qiitaex start -->
-- Aug 24 - [GitHubプロフィールにブログやQiitaの最新記事を表示する](https://qiita.com/sarisia/items/630d53cee7976e36faa3)
-- Jul 07 - [ローカルでも CI でも使える卒論ビルド環境](https://qiita.com/sarisia/items/bd306a064a8a5c2ab843)
-- Jun 21 - [Go Module Mirror から壊れたパッケージが落ちてくる](https://qiita.com/sarisia/items/6a0c2fdb7fa8a253b0de)
-- Jun 06 - [WSL2 Docker が PC のディスクを圧迫する](https://qiita.com/sarisia/items/5c53c078ab30eb26bc3b)
-<!-- qiitaex end -->
 
 ## Multiple feeds
 
@@ -224,11 +243,58 @@ Make sure to change `start_flag` and `end_flag` for each feed.
 <!-- qiita end -->
 ```
 
+## Using Deploy Key or Personal Access Token
+
+[`actions/checkout`](https://github.com/actions/checkout) action can handle this.
+
+For deploy key:
+
+```yaml
+- uses: actions/checkout@v2
+  with:
+    ssh-key: ${{ secrets.DEPLOY_KEY }}
+```
+
+For Personal Access Token:
+
+```yaml
+- uses: actions/checkout@v2
+  with:
+    token: ${{ secrets.PAT }}
+```
+
 # Remarks
 
-## `locale` option is not working
+## `locale` option needs additional operation
 
 Setting `locale` option is not working correctly due to the limitation of
-Node.js shipped with GitHub Actions runner. I'm investigating this issue.
+Node.js shipped with GitHub Actions runner.
 
-`timezone` seems working correctly.
+If you want this to work, you need to set up ICU data set manually.
+
+You can use the helper action [`sarisia/setup-icu`](https://github.com/sarisia/setup-icu) to do this:
+
+```yaml
+steps:
+  - uses: sarisia/setup-icu@v1
+  - uses: sarisia/actions-readme-feed@v1
+    with:
+      file: README.md
+      locale: 'ja-JP'
+```
+
+<details>
+<summary>Also you can do this manually...</summary>
+
+```yaml
+steps:
+  - run: npm install icu4c-data@64l
+  - uses: sarisia/actions-readme-feed@v1
+    with:
+      file: README.md
+      locale: 'ja-JP'
+    env:
+      NODE_ICU_DATA: node_modules/icu4c-data
+```
+
+</details>
