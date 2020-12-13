@@ -1,0 +1,22 @@
+name: test run release branch
+on:
+  repository_dispatch:
+  push:
+    tags:
+      - v*
+    branches:
+      - release/*
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          url: 'https://note.sarisia.cc/index.xml'
+          file: 'README.md'
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: test run release branch
