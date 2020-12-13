@@ -253,6 +253,7 @@ For deploy key:
 - uses: actions/checkout@v2
   with:
     ssh-key: ${{ secrets.DEPLOY_KEY }}
+- uses: sarisia/actions-readme-feed@v1
 ```
 
 For Personal Access Token:
@@ -261,6 +262,7 @@ For Personal Access Token:
 - uses: actions/checkout@v2
   with:
     token: ${{ secrets.PAT }}
+- uses: sarisia/actions-readme-feed@v1
 ```
 
 # Remarks
@@ -279,6 +281,7 @@ steps:
   - uses: sarisia/setup-icu@v1
   - uses: sarisia/actions-readme-feed@v1
     with:
+      url: https://note.sarisia.cc/index.xml
       file: README.md
       locale: 'ja-JP'
 ```
@@ -291,6 +294,7 @@ steps:
   - run: npm install icu4c-data@64l
   - uses: sarisia/actions-readme-feed@v1
     with:
+      url: https://note.sarisia.cc/index.xml
       file: README.md
       locale: 'ja-JP'
     env:
