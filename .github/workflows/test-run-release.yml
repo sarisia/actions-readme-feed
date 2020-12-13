@@ -1,6 +1,6 @@
 name: test run release branch
 on:
-  repository_dispatch:
+  workflow_dispatch:
   push:
     tags:
       - v*
