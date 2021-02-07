@@ -64,7 +64,8 @@ async function run() {
     })
 
     const results = await Promise.all(fetchers.map(f => f()))
-    let allItems: rss.Item[] = [].concat(...results)
+    let allItems: rss.Item[] = []
+    allItems = allItems.concat(...results)
 
     if (!allItems.length) {
         core.setFailed('Nothing was fetched')
