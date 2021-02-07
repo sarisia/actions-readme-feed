@@ -8,13 +8,13 @@ async function run() {
     // getting inputs
     const url = core.getInput('url')
     if (!url) {
-        core.error('url is missing.')
+        core.setFailed('url is missing.')
         return
     }
 
     const file = core.getInput('file')
     if (!file) {
-        core.error('file is missing.')
+        core.setFailed('file is missing.')
         return
     }
 
@@ -32,7 +32,7 @@ async function run() {
     try {
         lines = await getLines(file)
     } catch(e) {
-        core.error(`failed to read file: ${e.message}`)
+        core.setFailed(`failed to read file: ${e.message}`)
         return
     }
 
@@ -41,7 +41,7 @@ async function run() {
     try {
         allItems = await getFeedItems(url)
     } catch (e) {
-        core.error(`failed to get feed: ${e.message}`)
+        core.setFailed(`failed to get feed: ${e.message}`)
         return
     }
 
@@ -50,7 +50,7 @@ async function run() {
         try {
             allItems = sortItems(allItems)
         } catch (e) {
-            core.error(`failed to sort feed items: ${e.message}`)
+            core.setFailed(`failed to sort feed items: ${e.message}`)
             return
         }
     }
@@ -73,7 +73,7 @@ async function run() {
     try {
         await write(file, joinedResult)
     } catch (e) {
-        core.error(`failed to write file: ${e.message}`)
+        core.setFailed(`failed to write file: ${e.message}`)
         return
     }
 
