@@ -46,7 +46,10 @@ jobs:
           url: 'https://note.sarisia.cc/index.xml'
           file: 'README.md'
           nowrite: true
-      - run: git commit -m "this commit should fail"
+      - run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git commit -m "this commit should fail"
         continue-on-error: true
       
       - name: no url
