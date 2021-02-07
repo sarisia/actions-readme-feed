@@ -16,12 +16,18 @@ async function run() {
     const timezone = core.getInput('timezone') || 'UTC'
     const nowrite = core.getInput('nowrite').toLowerCase() === 'true'
 
-    const url = core.getInput('url')
-    if (!url) {
+    const url = core.getInput('url') || ''
+    const urls: string[] = url.split('\n').filter(x => x || false)
+    // prevent urls from leak
+    urls.forEach((u) => {
+        core.setSecret(u)
+    })
+
+    if (!urls.length) {
         core.setFailed('url is missing.')
         return
     }
-
+    
     const file = core.getInput('file')
     if (!file) {
         if (nowrite) {
@@ -44,11 +50,25 @@ async function run() {
     }
 
     // get entries from feed
-    let allItems: rss.Item[]
-    try {
-        allItems = await getFeedItems(url)
-    } catch (e) {
-        core.setFailed(`failed to get feed: ${e.message}`)
+    // don't do Array.prototype.forEach! It won't wait promises!
+    const fetchers = urls.map((u, i) => {
+        return async function() {
+            try {
+                return await getFeedItems(u)
+            } catch (e) {
+                core.error(`failed to get feed ${i + 1}/${urls.length}: ${e}`)
+            
+            }
+            return []
+        }
+    })
+
+    const results = await Promise.all(fetchers.map(f => f()))
+    let allItems: rss.Item[] = []
+    allItems = allItems.concat(...results)
+
+    if (!allItems.length) {
+        core.setFailed('Nothing was fetched')
         return
     }
 
