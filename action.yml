@@ -37,6 +37,10 @@ inputs:
     description: 'Timezone used to format date'
     required: false
     default: 'UTC'
+  nowrite:
+    description: 'Do not write results to the file specified as `file` input'
+    required: false
+    default: 'false'
 
 outputs:
   changed:

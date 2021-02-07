@@ -26,6 +26,7 @@ async function run() {
     const endFlag = core.getInput('end_flag') || '<!-- feed end -->'
     const locale = core.getInput('locale') || 'en-US'
     const timezone = core.getInput('timezone') || 'UTC'
+    const nowrite = core.getInput('nowrite').toLowerCase() === 'true'
 
     // ger current markdown, parse them
     let lines: string[]
@@ -69,12 +70,14 @@ async function run() {
         core.info(joinedResult)
     core.endGroup()
     
-    // write result to file
-    try {
-        await write(file, joinedResult)
-    } catch (e) {
-        core.setFailed(`failed to write file: ${e.message}`)
-        return
+    // write result to file if nowrite is not set
+    if (!nowrite) {
+        try {
+            await write(file, joinedResult)
+        } catch (e) {
+            core.setFailed(`failed to write file: ${e.message}`)
+            return
+        }
     }
 
     core.info('Generating outputs...')
