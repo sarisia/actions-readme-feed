@@ -6,18 +6,6 @@ import { formatFeeds } from './format'
 
 async function run() {
     // getting inputs
-    const url = core.getInput('url')
-    if (!url) {
-        core.setFailed('url is missing.')
-        return
-    }
-
-    const file = core.getInput('file')
-    if (!file) {
-        core.setFailed('file is missing.')
-        return
-    }
-
     const sort = core.getInput('sort').toLowerCase() === 'true'
     const maxEntry = parseInt(core.getInput('max_entry')) || 5
     // DO NOT USE core.getInput since it trims spaces/breaks at the end of line
@@ -28,13 +16,31 @@ async function run() {
     const timezone = core.getInput('timezone') || 'UTC'
     const nowrite = core.getInput('nowrite').toLowerCase() === 'true'
 
-    // ger current markdown, parse them
-    let lines: string[]
-    try {
-        lines = await getLines(file)
-    } catch(e) {
-        core.setFailed(`failed to read file: ${e.message}`)
+    const url = core.getInput('url')
+    if (!url) {
+        core.setFailed('url is missing.')
         return
+    }
+
+    const file = core.getInput('file')
+    if (!file) {
+        if (nowrite) {
+            core.warning('file is missing, but nowrite is set. Continue...')
+        } else {
+            core.setFailed('file is missing.')
+            return
+        }
+    }
+
+    // ger current markdown, parse them
+    let lines: string[] = []
+    if (file) {
+        try {
+            lines = await getLines(file)
+        } catch(e) {
+            core.setFailed(`failed to read file: ${e.message}`)
+            return
+        }
     }
 
     // get entries from feed
