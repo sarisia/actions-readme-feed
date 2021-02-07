@@ -212,7 +212,23 @@ steps:
     run: echo "changed!"
 ```
 
-## Multiple feeds
+## Multiple feeds (merged)
+
+You can pass multiple URLs to `url` and get results with
+all feeds merged & sorted by date!
+
+```yaml
+- name: merged feed
+  uses: sarisia/actions-readme-feed@v1
+  with:
+    file: 'README.md'
+    url: |
+      https://note.sarisia.cc/index.xml
+      https://qiita.com/sarisia/feed
+      https://zenn.dev/sarisia/feed
+```
+
+## Multiple feeds (separated)
 
 Make sure to change `start_flag` and `end_flag` for each feed.
 
