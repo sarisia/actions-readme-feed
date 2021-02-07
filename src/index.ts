@@ -6,18 +6,6 @@ import { formatFeeds } from './format'
 
 async function run() {
     // getting inputs
-    const url = core.getInput('url')
-    if (!url) {
-        core.error('url is missing.')
-        return
-    }
-
-    const file = core.getInput('file')
-    if (!file) {
-        core.error('file is missing.')
-        return
-    }
-
     const sort = core.getInput('sort').toLowerCase() === 'true'
     const maxEntry = parseInt(core.getInput('max_entry')) || 5
     // DO NOT USE core.getInput since it trims spaces/breaks at the end of line
@@ -26,14 +14,33 @@ async function run() {
     const endFlag = core.getInput('end_flag') || '<!-- feed end -->'
     const locale = core.getInput('locale') || 'en-US'
     const timezone = core.getInput('timezone') || 'UTC'
+    const nowrite = core.getInput('nowrite').toLowerCase() === 'true'
+
+    const url = core.getInput('url')
+    if (!url) {
+        core.setFailed('url is missing.')
+        return
+    }
+
+    const file = core.getInput('file')
+    if (!file) {
+        if (nowrite) {
+            core.warning('file is missing, but nowrite is set. Continue...')
+        } else {
+            core.setFailed('file is missing.')
+            return
+        }
+    }
 
     // ger current markdown, parse them
-    let lines: string[]
-    try {
-        lines = await getLines(file)
-    } catch(e) {
-        core.error(`failed to read file: ${e.message}`)
-        return
+    let lines: string[] = []
+    if (file) {
+        try {
+            lines = await getLines(file)
+        } catch(e) {
+            core.setFailed(`failed to read file: ${e.message}`)
+            return
+        }
     }
 
     // get entries from feed
@@ -41,7 +48,7 @@ async function run() {
     try {
         allItems = await getFeedItems(url)
     } catch (e) {
-        core.error(`failed to get feed: ${e.message}`)
+        core.setFailed(`failed to get feed: ${e.message}`)
         return
     }
 
@@ -50,7 +57,7 @@ async function run() {
         try {
             allItems = sortItems(allItems)
         } catch (e) {
-            core.error(`failed to sort feed items: ${e.message}`)
+            core.setFailed(`failed to sort feed items: ${e.message}`)
             return
         }
     }
@@ -69,12 +76,14 @@ async function run() {
         core.info(joinedResult)
     core.endGroup()
     
-    // write result to file
-    try {
-        await write(file, joinedResult)
-    } catch (e) {
-        core.error(`failed to write file: ${e.message}`)
-        return
+    // write result to file if nowrite is not set
+    if (!nowrite) {
+        try {
+            await write(file, joinedResult)
+        } catch (e) {
+            core.setFailed(`failed to write file: ${e.message}`)
+            return
+        }
     }
 
     core.info('Generating outputs...')

@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npm run release
+
       - name: usage
         uses: ./
         with:
@@ -28,7 +29,49 @@ jobs:
           file: 'README.md'
           start_flag: "<!-- qiitaex start -->"
           end_flag: "<!-- qiitaex end -->"
+      - name: no file but nowrite is set (it's ok)
+        uses: ./
+        with:
+          url: 'https://note.sarisia.cc/index.xml'
+          nowrite: true
+
       - uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: test-run
+
+  must-fail-tests:
+    runs-on: ubuntu-latest
+    # continue-on-error: true
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm run release
+
+      - name: nowrite
+        uses: ./
+        with:
+          url: 'https://note.sarisia.cc/index.xml'
+          file: 'README.md'
+          nowrite: true
+      - run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git commit -m "this commit should fail"
+        continue-on-error: true
+      
+      - name: no url
+        uses: ./
+        continue-on-error: true
+        with:
+          file: 'README.md'
+
+      - name: no file
+        uses: ./
+        continue-on-error: true
+        with:
+          url: 'https://note.sarisia.cc/index.xml'
+
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: must file tests
