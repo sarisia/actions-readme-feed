@@ -34,6 +34,14 @@ jobs:
         with:
           url: 'https://note.sarisia.cc/index.xml'
           nowrite: true
+      - name: mixup
+        uses: ./
+        with:
+          url: |
+            https://note.sarisia.cc/index.xml
+            https://qiita.com/sarisia/feed
+            https://zenn.dev/sarisia/feed
+          file: 'README.md'
 
       - uses: sarisia/actions-status-discord@v1
         with:
