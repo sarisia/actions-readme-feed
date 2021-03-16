@@ -1,8 +1,8 @@
 # Actions Readme Feed
 
-Display RSS feed in your [GitHub Profile README](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme)
+Display and auto-update RSS feed in your [GitHub Profile README](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme)
 
-![](https://user-images.githubusercontent.com/33576079/90322554-a6815580-df90-11ea-8a16-96327dfdb0ea.png)
+![image](https://user-images.githubusercontent.com/33576079/111362737-8191c400-86d2-11eb-9647-f29273d871b8.png)
 
 > :warning: If you're reading this document in Marketplace page,
 > please refer to the [latest document here](https://github.com/sarisia/actions-readme-feed).
