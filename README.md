@@ -1,8 +1,8 @@
 # Actions Readme Feed
 
-Display RSS feed in your [GitHub Profile README](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme)
+Display and auto-update RSS feed in your [GitHub Profile README](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme)
 
-![](https://user-images.githubusercontent.com/33576079/90322554-a6815580-df90-11ea-8a16-96327dfdb0ea.png)
+![image](https://user-images.githubusercontent.com/33576079/111362737-8191c400-86d2-11eb-9647-f29273d871b8.png)
 
 > :warning: If you're reading this document in Marketplace page,
 > please refer to the [latest document here](https://github.com/sarisia/actions-readme-feed).
@@ -77,8 +77,12 @@ The result looks like:
 | `format` | | String | `- ${monthshort} ${02day} - [${title}](${url})` | Feed entry format string.<br>See [Formatting](#formatting) for details. |
 | `start_flag` | | String | `<!-- feed start -->` | Flag string to declare start of feed block |
 | `end_flag` | | String | `<!-- feed end -->` | Flag string to declare end of feed block |
-| `locale` | | String | `en-US` | Locale used to format date<br>**NEEDS ADDITIONAL OPERATION.** See [remarks](#locale-option-needs-additional-operation) |
+| `locale` | | String | `en-US` | Locale used to format date<br>**NEEDS ADDITIONAL CONFIGURATION.** See [remarks](#locale-option-needs-additional-operation) |
 | `timezone` | | String | `UTC` | Timezone (e.g. `Asia/Tokyo`) used to format date |
+| `nowrite` | | Boolean | `false` | Do not write results to the file specified as `file` input |
+| `retry` | | Number | `3` | Number of retries for fetching feeds |
+| `retry_backoff` | | Number | `5` | Retry backoff (seconds) |
+| `ensure_all` | | Boolean | `false` | Ensure that all feeds specified as `url` input are fetched correctly (== does not skip fetch errors) |
 
 # Formatting
 
