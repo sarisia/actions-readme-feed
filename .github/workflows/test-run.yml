@@ -84,6 +84,7 @@ jobs:
         continue-on-error: true
         with:
           url: 'https://invalid.sarisia.cc/nothing.xml'
+          file: 'README.md'
 
       - uses: sarisia/actions-status-discord@v1
         with:
