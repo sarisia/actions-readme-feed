@@ -86,14 +86,18 @@ async function run() {
             if (ensureAll) {
                 throw new Error("failed to fetch some feeds.")
             }
-            
+
             return []
         }
     })
 
-    const results = await Promise.all(fetchers.map(f => f()))
     let allItems: rss.Item[] = []
-    allItems = allItems.concat(...results)
+    try {
+        const results = await Promise.all(fetchers.map(f => f()))
+        allItems = allItems.concat(...results)
+    } catch(e) {
+        return
+    }
 
     if (!allItems.length) {
         core.setFailed('Nothing was fetched')
