@@ -67,8 +67,8 @@ async function run() {
     // don't do Array.prototype.forEach! It won't wait promises!
     const fetchers = urls.map((u, i) => {
         return async function() {
-            for (let i = 0; i < retry; ++i) {
-                if (i) {
+            for (let trycount = 0; trycount < retry; ++trycount) {
+                if (trycount) {
                     // retry backoff
                     // synchronous sleep
                     await new Promise(resolve => setTimeout(resolve, retryBackoff * 1000))
@@ -77,7 +77,7 @@ async function run() {
                 try {
                     return await getFeedItems(u)
                 } catch (e) {
-                    core.error(`[feed ${i + 1}/${urls.length}][try ${i+1}/${retry}] failed to get feed: ${e}`)
+                    core.error(`[feed ${i + 1}/${urls.length}][try ${trycount+1}/${retry}] failed to get feed: ${e}`)
                 }
             }
 
