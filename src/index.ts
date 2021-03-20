@@ -7,7 +7,11 @@ import { formatFeeds } from './format'
 async function run() {
     // getting inputs
     const sort = core.getInput('sort').toLowerCase() === 'true'
-    const maxEntry = parseInt(core.getInput('max_entry')) || 5
+    const maxEntry = parseInt(core.getInput('max_entry'), 10) || 5
+    if (maxEntry < 0) {
+        core.setFailed("cannot set `maxEntry` to lower than 0")
+        return
+    }
     // DO NOT USE core.getInput since it trims spaces/breaks at the end of line
     const format = process.env['INPUT_FORMAT'] || '- ${monthshort} ${02day} - [${title}](${url})'
     const startFlag = core.getInput('start_flag') || '<!-- feed start -->'
@@ -15,6 +19,16 @@ async function run() {
     const locale = core.getInput('locale') || 'en-US'
     const timezone = core.getInput('timezone') || 'UTC'
     const nowrite = core.getInput('nowrite').toLowerCase() === 'true'
+    const retry = parseInt(core.getInput('retry'), 10) || 3
+    if (retry < 0) {
+        core.setFailed("cannot set `retry` to lower than 0")
+        return
+    }
+    const retryBackoff = parseInt(core.getInput('retryBackoff'), 10) || 5
+    if (retryBackoff < 0) {
+        core.setFailed("cannot set `retryBackoff` to lower than 0")
+        return
+    }
 
     const url = core.getInput('url') || ''
     const urls: string[] = url.split('\n').filter(x => x || false)
@@ -53,12 +67,21 @@ async function run() {
     // don't do Array.prototype.forEach! It won't wait promises!
     const fetchers = urls.map((u, i) => {
         return async function() {
-            try {
-                return await getFeedItems(u)
-            } catch (e) {
-                core.error(`failed to get feed ${i + 1}/${urls.length}: ${e}`)
-            
+            for (let i = 0; i < retry; ++i) {
+                if (i) {
+                    // retry backoff
+                    // synchronous sleep
+                    await new Promise(resolve => setTimeout(resolve, retryBackoff * 1000))
+                }
+
+                try {
+                    return await getFeedItems(u)
+                } catch (e) {
+                    core.error(`[feed ${i + 1}/${urls.length}][try ${i+1}/${retry}] failed to get feed: ${e}`)
+                }
             }
+
+            core.error(`[feed ${i + 1}/${urls.length}] max retry count exceeded. Abort.`)
             return []
         }
     })

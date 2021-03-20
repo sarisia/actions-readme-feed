@@ -5,12 +5,7 @@ const parser = new Parser({
 })
 
 export async function getFeedItems(url:string): Promise<rss.Item[]> {
-    const feed = await parser.parseURL(url)
-    if (!feed.items) {
-        throw new Error('item not found in feed.') 
-    }
-
-    return feed.items
+    return (await parser.parseURL(url)).items || []
 }
 
 export function sortItems(items: rss.Item[]): rss.Item[] {

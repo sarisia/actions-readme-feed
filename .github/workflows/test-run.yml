@@ -79,6 +79,12 @@ jobs:
         with:
           url: 'https://note.sarisia.cc/index.xml'
 
+      - name: retry
+        uses: ./
+        continue-on-error: true
+        with:
+          url: 'https://invalid.sarisia.cc/nothing.xml'
+
       - uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
