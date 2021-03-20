@@ -95,5 +95,6 @@ jobs:
         with:
           url: 'https://invalid.sarisia.cc/nothing.xml'
           file: 'README.md'
-          retry: 5
-          retry_backoff: 10
+          retry: 2
+          retry_backoff: 1
+          ensure_all: true
