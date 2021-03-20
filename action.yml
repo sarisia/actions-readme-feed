@@ -42,7 +42,7 @@ inputs:
     required: false
     default: 'false'
   retry:
-    description: 'Numbers of retries for fetching feeds'
+    description: 'Number of retries for fetching feeds'
     required: false
     default: '3'
   retry_backoff:
