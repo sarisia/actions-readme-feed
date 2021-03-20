@@ -41,6 +41,14 @@ inputs:
     description: 'Do not write results to the file specified as `file` input'
     required: false
     default: 'false'
+  retry:
+    description: 'Numbers of retries for fetching feeds'
+    required: false
+    default: '3'
+  retry_backoff:
+    description: 'Retry backoff (seconds)'
+    required: false
+    default: '5'
 
 outputs:
   changed:

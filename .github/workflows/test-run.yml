@@ -83,3 +83,17 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: must file tests
+
+  retry-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm run release
+      - name: retry
+        uses: ./
+        continue-on-error: true
+        with:
+          url: 'https://invalid.sarisia.cc/nothing.xml'
+          file: 'README.md'
+          retry: 5
+          retry_backoff: 10
