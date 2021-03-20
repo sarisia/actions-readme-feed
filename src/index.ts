@@ -96,7 +96,7 @@ async function run() {
         const results = await Promise.all(fetchers.map(f => f()))
         allItems = allItems.concat(...results)
     } catch(e) {
-        core.setFailed(e)
+        core.setFailed("Aborted by ensure_all")
         return
     }
 
