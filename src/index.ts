@@ -29,6 +29,7 @@ async function run() {
         core.setFailed("cannot set `retryBackoff` to lower than 0")
         return
     }
+    const ensureAll = core.getInput('ensure_all').toLowerCase() === 'true'
 
     const url = core.getInput('url') || ''
     const urls: string[] = url.split('\n').filter(x => x || false)
@@ -82,13 +83,22 @@ async function run() {
             }
 
             core.error(`[feed ${i + 1}/${urls.length}] max retry count exceeded. Abort.`)
+            if (ensureAll) {
+                throw new Error("failed to fetch some feeds.")
+            }
+
             return []
         }
     })
 
-    const results = await Promise.all(fetchers.map(f => f()))
     let allItems: rss.Item[] = []
-    allItems = allItems.concat(...results)
+    try {
+        const results = await Promise.all(fetchers.map(f => f()))
+        allItems = allItems.concat(...results)
+    } catch(e) {
+        core.setFailed("Aborted by ensure_all")
+        return
+    }
 
     if (!allItems.length) {
         core.setFailed('Nothing was fetched')
