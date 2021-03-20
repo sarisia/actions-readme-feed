@@ -45,7 +45,7 @@ inputs:
     description: 'Numbers of retries for fetching feeds'
     required: false
     default: '3'
-  retryBackoff:
+  retry_backoff:
     description: 'Retry backoff (seconds)'
     required: false
     default: '5'

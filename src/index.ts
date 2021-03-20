@@ -24,7 +24,7 @@ async function run() {
         core.setFailed("cannot set `retry` to lower than 0")
         return
     }
-    const retryBackoff = parseInt(core.getInput('retryBackoff'), 10) || 5
+    const retryBackoff = parseInt(core.getInput('retry_backoff'), 10) || 5
     if (retryBackoff < 0) {
         core.setFailed("cannot set `retryBackoff` to lower than 0")
         return
