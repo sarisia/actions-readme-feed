@@ -8,7 +8,7 @@ on:
       - release/*
 
 jobs:
-  test:
+  run-checkout:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,4 +19,15 @@ jobs:
       - uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: test run release branch
+          title: run-checkout
+  run-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sarisia/actions-readme-feed@release/v1
+        with:
+          url: 'https://note.sarisia.cc/index.xml'
+          file: 'README.md'
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: run-branch
