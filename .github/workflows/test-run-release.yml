@@ -1,4 +1,4 @@
-name: test run release branch
+name: release-branch-test
 on:
   workflow_dispatch:
   push:
@@ -23,6 +23,7 @@ jobs:
   run-branch:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: sarisia/actions-readme-feed@release/v1
         with:
           url: 'https://note.sarisia.cc/index.xml'
