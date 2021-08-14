@@ -31,6 +31,8 @@ async function run() {
     }
     const ensureAll = core.getInput('ensure_all').toLowerCase() === 'true'
 
+    const allowEmpty = core.getBooleanInput('allow_empty')
+
     const url = core.getInput('url') || ''
     const urls: string[] = url.split('\n').filter(x => x || false)
     // prevent urls from leak
@@ -100,11 +102,11 @@ async function run() {
         return
     }
 
-    if (!allItems.length) {
+    if (!allItems.length && !allowEmpty) {
         core.setFailed('Nothing was fetched')
         return
     }
-
+    
     // sort
     if (sort) {
         try {
