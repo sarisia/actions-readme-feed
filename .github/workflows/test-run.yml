@@ -21,7 +21,7 @@ jobs:
           file: 'README.md'
           start_flag: '<!-- usage start -->'
           end_flag: '<!-- usage end -->'
-      - name: exapmles-qiita
+      - name: examples-qiita
         id: qiita
         uses: ./
         with:
@@ -42,6 +42,12 @@ jobs:
             https://qiita.com/sarisia/feed
             https://zenn.dev/sarisia/feed
           file: 'README.md'
+      - name: empty-feed
+        uses: ./
+        with:
+          url: 'https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/tests/fixture/empty-feed.xml'
+          file: 'README.md'
+          allow_empty: true
 
       - uses: sarisia/actions-status-discord@v1
         with:

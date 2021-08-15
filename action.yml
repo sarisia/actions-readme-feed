@@ -53,6 +53,10 @@ inputs:
     description: 'Ensure that all feeds specified in url input are fetched correctly before proceed'
     required: false
     default: 'false'
+  allow_empty:
+    description: 'Don''t fail action if feed has no items'
+    required: false
+    default: 'false'
 
 outputs:
   changed:
