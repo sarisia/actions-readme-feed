@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Actions Readme Feed</title>
+        <link>http://example.com/events/</link>
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://example.com/events" />
+        <description>Events - Actions Readme Feed</description>
+        <language>en</language>
+        <copyright>Example</copyright>
+        <managingEditor>noreply@example.com</managingEditor>
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="http://example.com/events" />
+        <feedburner:info xmlns:feedburner="http://example.com/events/ext/1.0" uri="example-events" />
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" />
+    </channel>
+</rss>
