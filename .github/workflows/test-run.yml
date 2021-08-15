@@ -42,11 +42,10 @@ jobs:
             https://qiita.com/sarisia/feed
             https://zenn.dev/sarisia/feed
           file: 'README.md'
-
       - name: empty-feed
         uses: ./
         with:
-          url: 'https://raw.githubusercontent.com/${{ github.repository }}/allow-empty/tests/empty-feed.xml' ## Should change branch 'allow-empty' once PR merged
+          url: 'https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/tests/fixture/empty-feed.xml'
           file: 'README.md'
           allow_empty: true
 
