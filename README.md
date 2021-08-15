@@ -83,6 +83,7 @@ The result looks like:
 | `retry` | | Number | `3` | Number of retries for fetching feeds |
 | `retry_backoff` | | Number | `5` | Retry backoff (seconds) |
 | `ensure_all` | | Boolean | `false` | Ensure that all feeds specified as `url` input are fetched correctly (== does not skip fetch errors) |
+| `allow_empty` | | Boolean | `false` | Don't fail action if feed has no items |
 
 # Formatting
 
