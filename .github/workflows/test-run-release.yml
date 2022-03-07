@@ -11,7 +11,7 @@ jobs:
   run-checkout:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./
         with:
           url: 'https://note.sarisia.cc/index.xml'
@@ -23,7 +23,7 @@ jobs:
   run-branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: sarisia/actions-readme-feed@release/v1
         with:
           url: 'https://note.sarisia.cc/index.xml'

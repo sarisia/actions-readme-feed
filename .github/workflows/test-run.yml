@@ -11,7 +11,7 @@ jobs:
   feed:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: npm run release
 
       - name: usage
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     # continue-on-error: true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: npm run release
 
       - name: nowrite
@@ -93,7 +93,7 @@ jobs:
   retry-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: npm run release
       - name: retry
         uses: ./

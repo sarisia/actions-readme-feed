@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: npm ci
       - run: npm test
       - uses: sarisia/actions-status-discord@v1
@@ -20,7 +20,7 @@ jobs:
   test-icu:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v1.4.4
         with:
           node-version: '12.13'
@@ -38,7 +38,7 @@ jobs:
   release-test: 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: npm run release
       - uses: sarisia/actions-status-discord@v1
         if: always()
