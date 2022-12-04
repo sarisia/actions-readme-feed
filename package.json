@@ -4,7 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest --verbose --ci --detectOpenHandles",
+    "test": "npm run build && jest --verbose --ci --detectOpenHandles",
     "build": "tsc",
     "release": "rm -rf node_modules && npm ci && npm run build && npm prune --production",
     "version": "npm run release && git add .",
