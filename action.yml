@@ -1,62 +1,62 @@
-name: 'Actions Readme Feed'
-description: 'Display RSS feed in your GitHub Profile README'
+name: "Actions Readme Feed"
+description: "Display RSS feed in your GitHub Profile README"
 author: Sarisia
 
 inputs:
   url:
-    description: 'RSS Feed URL'
+    description: "RSS Feed URL"
     required: true
   file:
-    description: 'Path to Markdown file to update'
+    description: "Path to Markdown file to update"
     required: true
   sort:
-    description: 'Sort feed entries by date in decending order'
+    description: "Sort feed entries by date in decending order"
     required: false
-    default: 'true'
+    default: "true"
   max_entry:
-    description: 'Number of entries to show'
+    description: "Number of entries to show"
     required: false
-    default: '5'
+    default: "5"
   format:
-    description: 'Feed format string'
+    description: "Feed format string"
     required: false
-    default: '- ${monthshort} ${02day} - [${title}](${url})'
+    default: "- ${monthshort} ${02day} - [${title}](${url})"
   start_flag:
-    description: 'Start of feed block in Markdown'
+    description: "Start of feed block in Markdown"
     required: false
-    default: '<!-- feed start -->'
+    default: "<!-- feed start -->"
   end_flag:
-    description: 'End of feed block in Markdown'
+    description: "End of feed block in Markdown"
     required: false
-    default: '<!-- feed end -->'
+    default: "<!-- feed end -->"
   locale:
-    description: 'Locale used to format date'
+    description: "Locale used to format date"
     required: false
-    default: 'en-US'
+    default: "en-US"
   timezone:
-    description: 'Timezone used to format date'
+    description: "Timezone used to format date"
     required: false
-    default: 'UTC'
+    default: "UTC"
   nowrite:
-    description: 'Do not write results to the file specified as `file` input'
+    description: "Do not write results to the file specified as `file` input"
     required: false
-    default: 'false'
+    default: "false"
   retry:
-    description: 'Number of retries for fetching feeds'
+    description: "Number of retries for fetching feeds"
     required: false
-    default: '3'
+    default: "3"
   retry_backoff:
-    description: 'Retry backoff (seconds)'
+    description: "Retry backoff (seconds)"
     required: false
-    default: '5'
+    default: "5"
   ensure_all:
-    description: 'Ensure that all feeds specified in url input are fetched correctly before proceed'
+    description: "Ensure that all feeds specified in url input are fetched correctly before proceed"
     required: false
-    default: 'false'
+    default: "false"
   allow_empty:
-    description: 'Don''t fail action if feed has no items'
+    description: "Don't fail action if feed has no items"
     required: false
-    default: 'false'
+    default: "false"
 
 outputs:
   changed:
@@ -69,9 +69,9 @@ outputs:
     description: Result document with feed lines inserted
 
 runs:
-  using: 'node12'
-  main: 'lib/index.js'
+  using: "node16"
+  main: "lib/index.js"
 
 branding:
-  color: 'red'
-  icon: 'rss'
+  color: "red"
+  icon: "rss"
