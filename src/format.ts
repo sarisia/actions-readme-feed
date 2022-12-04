@@ -1,13 +1,20 @@
 import rss from 'rss-parser'
 
+
+interface MatchedPlaceholder {
+    raw: string
+    flag: string
+    verb: string
+}
+
+
 const placeholderRe = /(?<raw>\$\{(?<flag>\d*)(?<verb>.+?)\})/g
 
 export function formatFeeds(
-        feeds:Array<rss.Item>, format:string, startFlag:string, endFlag:string,
-        locale:string, timezone:string
-    ): Array<string> {
-    // @ts-ignore
-    const fields = [...format.matchAll(placeholderRe)].map((e) => e.groups)
+    feeds: Array<rss.Item>, format: string, startFlag: string, endFlag: string,
+    locale: string, timezone: string
+): Array<string> {
+    const fields = [...format.matchAll(placeholderRe)].map((e) => e.groups) as unknown as MatchedPlaceholder[]
     return [
         startFlag,
         ...feeds.map((feed) => formatFeed(feed, format, fields, locale, timezone)),
@@ -16,9 +23,8 @@ export function formatFeeds(
 }
 
 function formatFeed(
-        feed:rss.Item, format:string, fields: Array<{raw:string, flag:string, verb:string}>,
-        locale:string, timezone:string): string
-    {
+    feed: rss.Item, format: string, fields: MatchedPlaceholder[],
+    locale: string, timezone: string): string {
     const feedDate = feed.isoDate ? new Date(feed.isoDate) : undefined
 
     // TODO: more memory-friendly arg initialize
@@ -33,7 +39,7 @@ function formatFeed(
         date: feedDate?.toLocaleString(locale, { timeZone: timezone })
     }
 
-    return fields.reduce((acc:string, cur:{raw:string, flag:string, verb:string}) => {
+    return fields.reduce((acc: string, cur: MatchedPlaceholder) => {
         // flag: 2 -> pad to length 2 with space (' ')
         // flag:02 -> pad to length 2 with zero('0')
         const padstring = cur.flag.startsWith('0') ? '0' : ' '
@@ -43,5 +49,5 @@ function formatFeed(
 
         return acc.replace(cur.raw, arg || '')
     }
-    , format)
+        , format)
 }

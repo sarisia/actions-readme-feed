@@ -44,7 +44,7 @@ async function run() {
         core.setFailed('url is missing.')
         return
     }
-    
+
     const file = core.getInput('file')
     if (!file) {
         if (nowrite) {
@@ -60,7 +60,7 @@ async function run() {
     if (file) {
         try {
             lines = await getLines(file)
-        } catch(e) {
+        } catch (e: any) {
             core.setFailed(`failed to read file: ${e.message}`)
             return
         }
@@ -69,7 +69,7 @@ async function run() {
     // get entries from feed
     // don't do Array.prototype.forEach! It won't wait promises!
     const fetchers = urls.map((u, i) => {
-        return async function() {
+        return async function () {
             for (let trycount = 0; trycount < retry; ++trycount) {
                 if (trycount) {
                     // retry backoff
@@ -80,7 +80,7 @@ async function run() {
                 try {
                     return await getFeedItems(u)
                 } catch (e) {
-                    core.error(`[feed ${i + 1}/${urls.length}][try ${trycount+1}/${retry}] failed to get feed: ${e}`)
+                    core.error(`[feed ${i + 1}/${urls.length}][try ${trycount + 1}/${retry}] failed to get feed: ${e}`)
                 }
             }
 
@@ -97,7 +97,7 @@ async function run() {
     try {
         const results = await Promise.all(fetchers.map(f => f()))
         allItems = allItems.concat(...results)
-    } catch(e) {
+    } catch (e) {
         core.setFailed("Aborted by ensure_all")
         return
     }
@@ -106,12 +106,12 @@ async function run() {
         core.setFailed('Nothing was fetched')
         return
     }
-    
+
     // sort
     if (sort) {
         try {
             allItems = sortItems(allItems)
-        } catch (e) {
+        } catch (e: any) {
             core.setFailed(`failed to sort feed items: ${e.message}`)
             return
         }
@@ -122,20 +122,20 @@ async function run() {
     const newLines = formatFeeds(items, format, startFlag, endFlag, locale, timezone)
     const joinedNewLines = newLines.join('\n')
     core.startGroup('Dump feeds block')
-        core.info(joinedNewLines)
+    core.info(joinedNewLines)
     core.endGroup()
 
     const result = updateFeed(lines, newLines, startFlag, endFlag)
     const joinedResult = result.join('\n')
     core.startGroup('Dump result document')
-        core.info(joinedResult)
+    core.info(joinedResult)
     core.endGroup()
-    
+
     // write result to file if nowrite is not set
     if (!nowrite) {
         try {
             await write(file, joinedResult)
-        } catch (e) {
+        } catch (e: any) {
             core.setFailed(`failed to write file: ${e.message}`)
             return
         }
