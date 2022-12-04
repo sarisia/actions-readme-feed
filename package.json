@@ -5,9 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "npm run build && jest --verbose --ci --detectOpenHandles",
-    "build": "tsc",
-    "release": "rm -rf node_modules && npm ci && npm run build && npm prune --production",
-    "version": "npm run release && git add .",
+    "build": "ncc build -o lib --minify src/index.ts",
     "deps": "ncu --doctor -u"
   },
   "repository": {
@@ -27,6 +25,7 @@
   "devDependencies": {
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.10",
+    "@vercel/ncc": "^0.34.0",
     "jest": "^27.0.6",
     "npm-check-updates": "^16.4.3",
     "ts-jest": "^27.0.3",
