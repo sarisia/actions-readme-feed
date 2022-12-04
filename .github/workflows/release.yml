@@ -74,17 +74,24 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+      - name: checkout built artifact
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
         with:
           ref: ${{ github.ref_name }}
+
+      - name: checkout sources
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+        with:
+          ref: ${{ github.sha }}
+          path: origin
 
       - uses: ./
         with:
           url: "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/tests/fixture/feed.xml"
-          file: "tests/fixture/input.md"
+          file: "origin/tests/fixture/input.md"
 
       - name: check diff
-        run: diff tests/fixture/input.md tests/fixture/wants.md
+        run: diff origin/tests/fixture/input.md origin/tests/fixture/wants.md
 
   conclude:
     runs-on: ubuntu-latest
