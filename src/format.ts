@@ -36,7 +36,8 @@ function formatFeed(
         monthshort: feedDate?.toLocaleString(locale, { timeZone: timezone, month: 'short' }),
         monthlong: feedDate?.toLocaleString(locale, { timeZone: timezone, month: 'long' }),
         day: feedDate?.toLocaleString(locale, { timeZone: timezone, day: 'numeric' }),
-        date: feedDate?.toLocaleString(locale, { timeZone: timezone })
+        date: feedDate?.toLocaleString(locale, { timeZone: timezone }),
+        guid: feed.guid
     }
 
     return fields.reduce((acc: string, cur: MatchedPlaceholder) => {
