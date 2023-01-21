@@ -103,6 +103,7 @@ Examples below uses following RSS feed item:
 | :-: | :-: | - |
 | `title` | `Blog Post` | |
 | `url` | `https://blog.example.com/blog-post` | |
+| `guid` | `https://blog.example.com/blog-post` | Maybe a URL, maybe not. Check your feed. |
 | `year` | `2020` | [`timezone`](#inputs) affects |
 | `month` | `8` | [`timezone`](#inputs) affects. |
 | `monthshort` | `Aug` | [`timezone`](#inputs) affects. |
