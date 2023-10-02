@@ -55,6 +55,32 @@ describe("formatFeeds", () => {
         expect(got).toStrictEqual(want)
     })
 
+    test("full description", () => {
+        const feeds: Array<rss.Item> = [
+            {
+                guid: "https://blog.example.com/entry1",
+                title: "example blog entry",
+                isoDate: "2015-11-12T21:16:39.000Z",
+                description: "example blog entry description"
+            },
+            {
+                guid: "https://blog.example.com/entry2",
+                title: "example blog entry 2",
+                isoDate: "2020-08-01T00:11:22.000Z",
+                description: "example blog entry 2 description"
+            }
+        ]
+        const format = "${title}:${guid}:${description}:${year}:${month}:${monthshort}:${monthlong}:${day}:${date}"
+        const want = [
+            "<!-- feed start -->",
+            "example blog entry:https://blog.example.com/entry1:example blog entry description:2015:11:Nov:November:12:11/12/2015, 9:16:39 PM",
+            "example blog entry 2:https://blog.example.com/entry2:example blog entry 2 description:2020:8:Aug:August:1:8/1/2020, 12:11:22 AM",
+            "<!-- feed end -->"
+        ]
+        const got = formatFeeds(feeds, format, startFlag, endFlag, locale, timezone)
+        expect(got).toStrictEqual(want)
+    })
+
     test("full with empty feeds", () => {
         const feeds: Array<rss.Item> = [
             {},
