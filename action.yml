@@ -69,7 +69,7 @@ outputs:
     description: Result document with feed lines inserted
 
 runs:
-  using: "node16"
+  using: "node20"
   main: "lib/index.js"
 
 branding:

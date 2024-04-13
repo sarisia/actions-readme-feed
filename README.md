@@ -27,7 +27,7 @@ Then add following steps to your workflow:
 
 ```yaml
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v4
   - uses: sarisia/actions-readme-feed@v1
     with:
       url: 'https://note.sarisia.cc/index.xml'
@@ -40,7 +40,7 @@ steps:
   
 ```yaml
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v4
   - uses: sarisia/actions-readme-feed@v1
     with:
       url: 'https://note.sarisia.cc/index.xml'
@@ -193,7 +193,7 @@ jobs:
   readme:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: sarisia/actions-readme-feed@v1
         id: feed
         with:
@@ -272,7 +272,7 @@ Make sure to change `start_flag` and `end_flag` for each feed.
 For deploy key:
 
 ```yaml
-- uses: actions/checkout@v2
+- uses: actions/checkout@v4
   with:
     ssh-key: ${{ secrets.DEPLOY_KEY }}
 - uses: sarisia/actions-readme-feed@v1
@@ -281,7 +281,7 @@ For deploy key:
 For Personal Access Token:
 
 ```yaml
-- uses: actions/checkout@v2
+- uses: actions/checkout@v4
   with:
     token: ${{ secrets.PAT }}
 - uses: sarisia/actions-readme-feed@v1
